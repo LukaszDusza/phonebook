@@ -1,5 +1,6 @@
 package devlab.phonebook.service;
 
+import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.repository.ContactRepository;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,12 @@ public class ContactService {
         return contactRepository.findAll();
     }
 
-    public Contact addNewContact(Contact contact) {
-        return contactRepository.save(contact);
+    public void addNewContact(Contact contact) {
+        contactRepository.save(contact);
+    }
+
+    public List<Contact> getContactsByname(String name) {
+        return contactRepository.getContactsByName(name);
     }
 
 

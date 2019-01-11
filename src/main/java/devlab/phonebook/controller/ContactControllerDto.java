@@ -5,9 +5,7 @@ import devlab.phonebook.dtos.mappers.ContactMapper;
 import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.service.ContactService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +23,24 @@ public class ContactControllerDto {
     }
 
     @GetMapping("/contacts")
-    private List<ContactDto> getAllBooks() {
-        List<Contact> books = contactService.getContacts();
-        List<ContactDto> booksDto = new ArrayList<>();
-        for (Contact b : books) {
-            booksDto.add(mapper.map(b));
+    public List<ContactDto> getAllContacts() {
+        List<Contact> contacts = contactService.getContacts();
+        List<ContactDto> contactsDto = new ArrayList<>();
+        for (Contact c : contacts) {
+            contactsDto.add(mapper.map(c));
         }
-        return booksDto;
+        return contactsDto;
     }
+
+
+    @GetMapping("/contacts/{name}")
+    public List<ContactDto> getAllContacts(@PathVariable String name) {
+        List<Contact> contacts = contactService.getContactsByname(name);
+        List<ContactDto> contactsDto = new ArrayList<>();
+        for (Contact c : contacts) {
+            contactsDto.add(mapper.map(c));
+        }
+        return contactsDto;
+    }
+
 }
