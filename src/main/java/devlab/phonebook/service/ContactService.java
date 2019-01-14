@@ -1,10 +1,7 @@
 package devlab.phonebook.service;
 
 import devlab.phonebook.dtos.model.ContactDto;
-import devlab.phonebook.model.Address;
-import devlab.phonebook.model.Category;
-import devlab.phonebook.model.Contact;
-import devlab.phonebook.model.Ranking;
+import devlab.phonebook.model.*;
 import devlab.phonebook.repository.AddressRepository;
 import devlab.phonebook.repository.CategoryRepository;
 import devlab.phonebook.repository.ContactRepository;
@@ -88,8 +85,10 @@ public class ContactService {
         contact.setNumber(contactDto.getNumber());
 
         //tags
-        contact.setTags(new ArrayList<>());
+        List<Tag> emptyTags = new ArrayList<>();
+        contact.setTags(emptyTags);
 
+        //save
         contactRepository.save(contact);
 
     }
