@@ -35,12 +35,17 @@ public class ContactControllerDto {
 
     @GetMapping("/contacts/{name}")
     public List<ContactDto> getAllContacts(@PathVariable String name) {
-        List<Contact> contacts = contactService.getContactsByname(name);
+      //  List<Contact> contacts = contactService.getContactsByname(name);
         List<ContactDto> contactsDto = new ArrayList<>();
-        for (Contact c : contacts) {
+        for (Contact c : contactService.getContactsByname(name)) {
             contactsDto.add(mapper.map(c));
         }
         return contactsDto;
+    }
+
+    @PostMapping("/contacts")
+    public void addNew(@RequestBody ContactDto contactDto) {
+        contactService.addNewContactDTO(contactDto);
     }
 
 }

@@ -25,4 +25,6 @@ public class ContactController {
     public void addNew(@RequestBody Contact contact) {
         contactService.addNewContact(contact) ;
     }
+
+
 }
