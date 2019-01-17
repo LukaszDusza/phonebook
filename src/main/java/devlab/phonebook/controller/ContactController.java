@@ -26,5 +26,10 @@ public class ContactController {
         contactService.addNewContact(contact) ;
     }
 
+    @GetMapping("/contacts/tag")
+    public List<Contact> getContactsByTag(@RequestParam String title) {
+        return contactService.getContactsByTag(title);
+    }
+
 
 }

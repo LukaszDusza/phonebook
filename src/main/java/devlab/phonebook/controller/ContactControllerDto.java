@@ -1,51 +1,64 @@
 package devlab.phonebook.controller;
 
 
-import devlab.phonebook.dtos.mappers.ContactMapper;
 import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.service.ContactService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/dto/")
+@RequestMapping("/api/dto")
 public class ContactControllerDto {
 
     private ContactService contactService;
-    private ContactMapper mapper;
 
-    public ContactControllerDto(ContactService contactService, ContactMapper mapper) {
+
+    public ContactControllerDto(ContactService contactService) {
         this.contactService = contactService;
-        this.mapper = mapper;
     }
 
     @GetMapping("/contacts")
-    public List<ContactDto> getAllContacts() {
-        List<Contact> contacts = contactService.getContacts();
-        List<ContactDto> contactsDto = new ArrayList<>();
-        for (Contact c : contacts) {
-            contactsDto.add(mapper.map(c));
-        }
-        return contactsDto;
+    public List<ContactDto> getAllDtoContacts() {
+        return contactService.getAllDtoContacts();
     }
-
 
     @GetMapping("/contacts/{name}")
     public List<ContactDto> getAllContacts(@PathVariable String name) {
-      //  List<Contact> contacts = contactService.getContactsByname(name);
-        List<ContactDto> contactsDto = new ArrayList<>();
-        for (Contact c : contactService.getContactsByname(name)) {
-            contactsDto.add(mapper.map(c));
-        }
-        return contactsDto;
+        return contactService.getContactsDtoByName(name);
     }
 
     @PostMapping("/contacts")
     public void addNew(@RequestBody ContactDto contactDto) {
         contactService.addNewContactDTO(contactDto);
+    }
+
+    @PutMapping("/contacts")
+    public ResponseEntity<?> updateContact(@RequestParam(name = "phone") String phone, @RequestParam(name = "city") String city) {
+        boolean result = contactService.updateAddressByPhone(phone, city);
+
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/contacts")
+    public ResponseEntity<?> updateContact(@RequestParam(name = "phone") String phone) {
+        boolean result = contactService.deleteContactByPhone(phone);
+
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/contacts/tag")
+    public List<ContactDto> getContactsByTag(@RequestParam String title) {
+        return contactService.getContactsDtoByTag(title);
     }
 
 }

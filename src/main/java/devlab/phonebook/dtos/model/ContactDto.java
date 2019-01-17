@@ -21,5 +21,6 @@ public class ContactDto {
     private int ranking;
     private List<String> tags = new ArrayList<>();
 
+
 }
 

@@ -1,24 +1,47 @@
 package devlab.phonebook.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
-@Data
+@Data //Adnotacja @Data generuje settery, gettery, oraz metody z klasy Object.
 @AllArgsConstructor
 @NoArgsConstructor
+// Adnotacja, która określa, czy dana klasa jest encją bazodanową. Hibernate zmapuje tą klasę  i stworzy jej odzwierciedlenie w bazie danych.
+// pola klasy , to będą kolumny.
 @Entity
+@Table(name = "contact") //adnotacja nie jesy eymagana, gdyż automatycznie hibernate tworząc nazwę tabeli nazwie ją tak samo jak klasa, lecz z małej litery.
 public class Contact {
 
+    // zaczniemy od tworzenia klasy modelowej w naszym projekcie. Aplikacja ma za zadanie gromadzić nasze kontakty do innych osób.
+    // dla uproszeczenia tutaj będziemy przechowywać imię, nazwisko, numer telefonu, adres jako miejscowość, kategorię kotaktu,
+    // ranking, czyli coś po czym w przyszłości możemy wyswietlać kontakty w kolejności np. ze względu na częstość używania
+    // i tagi, po których łatwo wyszukamy konkretną grupę osób.
 
+    // Pola te tworzymy głównie dla przykładu relacji pomiędzy encjami w bazie danych.
+    // Będziemy programować relacje:
+    // ManyToMany, OneToMany, ManyToOne, OneToOne.
+
+    // Pokażę również jak skonfigurować bibliotekę Lombok, która załatwia nam całość standardowego kodu, jaki musimy napisać,
+    // aby klasa była używalna, czyli getery setery, konstruktory itp.
+
+
+    // Adnotacja Id określa, że to pole będzie unikalne oraz, że jest to klucz główny w tabeli.
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //strategia generowania kolejnych numerów Id podczas dodawania rekordów do bazy danych.
     private Long id;
+
+    @Column(name = "name") //adnotacja określająca nazwę kolumny oraz dodatkowe ustawienia, np. unikalność, brak nulla, maksym. długość znaków itp.
     private String name;
     private String surname;
     private String number;
@@ -26,6 +49,7 @@ public class Contact {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "fk_address")
     private Address address;
+
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "fk_category")
@@ -41,7 +65,7 @@ public class Contact {
     @JoinTable(name = "contact_tag",
             joinColumns = @JoinColumn(name = "contact_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
 
 }
