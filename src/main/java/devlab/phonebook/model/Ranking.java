@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -30,6 +31,6 @@ public class Ranking {
                     // w przypadku usunięcia kategorii.
             }
     )
-    private Set<Contact> contacts;
+    private Set<Contact> contacts = new HashSet<>();
 
 }

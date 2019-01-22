@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/dto")
 public class TagControllerDto {
 
-    ContactService contactService;
+    private ContactService contactService;
 
     public TagControllerDto(ContactService contactService) {
         this.contactService = contactService;

@@ -4,6 +4,7 @@ package devlab.phonebook.controller;
 import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.service.ContactService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class ContactControllerDto {
         return contactService.getAllDtoContacts();
     }
 
+
     @GetMapping("/contacts/{name}")
     public List<ContactDto> getAllContacts(@PathVariable String name) {
         return contactService.getContactsDtoByName(name);
@@ -47,7 +49,7 @@ public class ContactControllerDto {
     }
 
     @DeleteMapping("/contacts")
-    public ResponseEntity<?> updateContact(@RequestParam(name = "phone") String phone) {
+    public ResponseEntity<?> deleteContact(@RequestParam(name = "phone") String phone) {
         boolean result = contactService.deleteContactByPhone(phone);
 
         if (result) {
@@ -59,6 +61,16 @@ public class ContactControllerDto {
     @GetMapping("/contacts/tag")
     public List<ContactDto> getContactsByTag(@RequestParam String title) {
         return contactService.getContactsDtoByTag(title);
+    }
+
+    //metoda dodajaca naglowek do odpowiedzi
+    @GetMapping("/contacts/header")
+    public ResponseEntity<List<Contact>> getContactsResponse() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Przykladowy-naglowek",
+                "przykladowa-wartosc-naglowka");
+
+        return ResponseEntity.ok().headers(responseHeaders).body(contactService.getContacts());
     }
 
 }

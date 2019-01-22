@@ -1,5 +1,6 @@
 package devlab.phonebook.service;
 
+import devlab.phonebook.commons.xlsCreator.CreatorXLS;
 import devlab.phonebook.dtos.mappers.CategoryMapper;
 import devlab.phonebook.dtos.mappers.ContactMapper;
 import devlab.phonebook.dtos.model.CategoryDto;
@@ -7,11 +8,21 @@ import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.dtos.model.TagDto;
 import devlab.phonebook.model.*;
 import devlab.phonebook.repository.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
+import javax.servlet.ServletContext;
 import javax.swing.text.html.Option;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 // adnotacja logiki biznesowej. Adnotacja Service, Controller, Repository,
@@ -21,8 +32,7 @@ import java.util.stream.Collectors;
 @Service
 public class ContactService {
 
-    //  private final static Logger LOGGER = Logger.getLogger(ContactService.class.getName());
-
+      private final static Logger LOGGER = Logger.getLogger(ContactService.class.getName());
     private ContactRepository contactRepository;
     private AddressRepository addressRepository;
     private CategoryRepository categoryRepository;
@@ -30,6 +40,9 @@ public class ContactService {
     private TagRepository tagRepository;
     private ContactMapper contactMapper;
     private CategoryMapper categoryMapper;
+
+    private String uploads;
+    private ServletContext servletContext;
 
     // @Autowired - adnotacja ta pozwala nam, na automatyczne tworzenie obiektów, które są zależnościami tej klasy.
     // Czyli do stworzenia obiektu klasy ContactService potrzebujemy posiadać obiekty repozytorów.
@@ -41,7 +54,8 @@ public class ContactService {
                           RankingRepository rankingRepository,
                           TagRepository tagRepository,
                           ContactMapper contactMapper,
-                          CategoryMapper categoryMapper) {
+                          CategoryMapper categoryMapper,
+                          ServletContext servletContext) {
         this.contactRepository = contactRepository;
         this.addressRepository = addressRepository;
         this.categoryRepository = categoryRepository;
@@ -49,6 +63,23 @@ public class ContactService {
         this.tagRepository = tagRepository;
         this.contactMapper = contactMapper;
         this.categoryMapper = categoryMapper;
+        this.servletContext = servletContext;
+        createDirectory();
+    }
+
+    private void createDirectory() {
+        uploads = servletContext.getRealPath("/uploads/");
+        System.out.println(uploads);
+        Path path = Paths.get(uploads);
+        //if directory exists?
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                //fail to create directory
+                e.printStackTrace();
+            }
+        }
     }
 
     public List<Contact> getContacts() {
@@ -236,4 +267,25 @@ public class ContactService {
         return contactDtos;
     }
 
+    public void saveContactsToXLSFile(String file) {
+        LOGGER.log(Level.INFO, uploads);
+        CreatorXLS<ContactDto> creatorXLS = new CreatorXLS<>(ContactDto.class);
+        List<ContactDto> contactDtos = new ArrayList<>();
+
+     //   contactRepository.findAll().stream().map( c -> contactDtos.add(contactMapper.map(c)));
+
+        for (Contact c:  contactRepository.findAll()) {
+            contactDtos.add(contactMapper.map(c));
+        }
+
+        try {
+            creatorXLS.createFile(contactDtos, uploads, file);
+        } catch (IOException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getUploads() {
+        return uploads;
+    }
 }

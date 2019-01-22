@@ -2,8 +2,12 @@ package devlab.phonebook.controller;
 
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.service.ContactService;
+import io.swagger.annotations.ResponseHeader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -15,6 +19,7 @@ public class ContactController {
     public ContactController(ContactService contactService) {
         this.contactService = contactService;
     }
+
 
     @GetMapping("/contacts")
     public List<Contact> getContacts() {
@@ -30,6 +35,7 @@ public class ContactController {
     public List<Contact> getContactsByTag(@RequestParam String title) {
         return contactService.getContactsByTag(title);
     }
+
 
 
 }

@@ -15,7 +15,7 @@ select contact.id,
 from contact
        join contact_tag on contact.id = contact_tag.contact_id
        join tag on contact_tag.tag_id = tag.id
-where tag.id = (select id from tag where title = '#partytime')
+where tag.id = (select id from tag where title = 'poland');
 
 
 //wyszukiwanie contact po tag title.
@@ -29,4 +29,4 @@ select contact.id,
 from contact
        join contact_tag on contact.id = contact_tag.contact_id
        join tag on contact_tag.tag_id = tag.id
-where tag.id = (select id from tag where title = '#poland')
+where tag.id = (select id from tag where title = 'trip')
