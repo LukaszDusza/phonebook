@@ -51,4 +51,10 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
             "where tag.id = (select id from tag where title = ?1)", nativeQuery = true)
     List<Contact> getContactsByTag(String title);
 
+    @Query(value = "SELECT c FROM Contact c WHERE c.number =  ?1")
+    Optional<Contact> findContactByNumber(String number);
+
+    @Query(value = "SELECT c FROM Contact c WHERE c.number =  ?1")
+    List<Contact> findContactsByNumber(String number);
+
 }

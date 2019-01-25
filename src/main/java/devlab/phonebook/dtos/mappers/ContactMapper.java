@@ -2,6 +2,7 @@ package devlab.phonebook.dtos.mappers;
 
 import devlab.phonebook.commons.mapper.Mapper;
 import devlab.phonebook.dtos.model.ContactDto;
+import devlab.phonebook.dtos.model.ContactDtoBuilder;
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.model.Tag;
 import org.springframework.stereotype.Component;
@@ -22,15 +23,26 @@ public class ContactMapper implements Mapper<Contact, ContactDto> {
                 .map(TagsToStringsList.INSTANCE)
                 .collect(Collectors.toList());
 
-        return new ContactDto(
-                from.getName(),
-                from.getSurname(),
-                from.getNumber(),
-                from.getAddress().getCity(),
-                from.getCategory().getTitle(),
-                from.getRanking().getNumber(),
-                tags
-        );
+//        return new ContactDto(
+//                from.getName(),
+//                from.getSurname(),
+//                from.getNumber(),
+//                from.getAddress().getCity(),
+//                from.getCategory().getTitle(),
+//                from.getRanking().getNumber(),
+//                tags
+//        );
+
+        return new ContactDtoBuilder()
+                .name(from.getName())
+                .surname(from.getSurname())
+                .number(from.getNumber())
+                .address(from.getAddress().getCity())
+                .category(from.getCategory().getTitle())
+                .ranking(from.getRanking().getNumber())
+                .tags(tags)
+                .build();
+
     }
 
     private enum TagsToStringsList implements Function<Tag, String> {

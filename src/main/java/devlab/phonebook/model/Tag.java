@@ -11,9 +11,8 @@ import java.util.Objects;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Tag {
 
     @Id
@@ -42,4 +41,5 @@ public class Tag {
     public int hashCode() {
         return Objects.hash(getTitle());
     }
+
 }

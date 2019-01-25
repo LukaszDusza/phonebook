@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-
 public class MyFile {
     private String name;
     private String fullPath;
@@ -16,5 +13,14 @@ public class MyFile {
     public MyFile(String name, String fullPath) {
         this.name = name;
         this.fullPath = fullPath;
+    }
+
+    public MyFile(String name, String fullPath, String time) {
+        this.name = name;
+        this.fullPath = fullPath;
+        this.time = time;
+    }
+
+    public MyFile() {
     }
 }

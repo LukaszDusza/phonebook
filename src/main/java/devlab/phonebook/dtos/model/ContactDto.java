@@ -1,8 +1,5 @@
 package devlab.phonebook.dtos.model;
 
-
-import devlab.phonebook.model.Category;
-import devlab.phonebook.model.Tag;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,6 +18,7 @@ public class ContactDto {
     private int ranking;
     private List<String> tags = new ArrayList<>();
 
-
 }
+
+
 

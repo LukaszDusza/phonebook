@@ -1,6 +1,7 @@
 package devlab.phonebook.controller;
 
 
+import devlab.phonebook.commons.exceptions.NotFoundException;
 import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.service.ContactService;
@@ -24,14 +25,25 @@ public class ContactControllerDto {
 
     @GetMapping("/contacts")
     public List<ContactDto> getAllDtoContacts() {
-        return contactService.getAllDtoContacts();
+        return contactService.getAllDtoContactsTwo();
     }
-
 
     @GetMapping("/contacts/{name}")
     public List<ContactDto> getAllContacts(@PathVariable String name) {
         return contactService.getContactsDtoByName(name);
     }
+
+    @ResponseBody
+    @GetMapping("/contacts/number")
+    public ResponseEntity<?> getContactDtoByNumber(@RequestParam String number) {
+        try {
+            return new ResponseEntity<>(contactService.getContactDtoByNumber(number), HttpStatus.OK); //200
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND); //404
+        }
+    }
+
 
     @PostMapping("/contacts")
     public void addNew(@RequestBody ContactDto contactDto) {
@@ -50,12 +62,15 @@ public class ContactControllerDto {
 
     @DeleteMapping("/contacts")
     public ResponseEntity<?> deleteContact(@RequestParam(name = "phone") String phone) {
-        boolean result = contactService.deleteContactByPhone(phone);
 
-        if (result) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            return ResponseEntity.ok().body(contactService.deleteContactByPhone(phone));
+
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.ok().body(e.getMessage());
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
     @GetMapping("/contacts/tag")

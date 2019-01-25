@@ -32,4 +32,8 @@ public class Category {
             }
     )
     private Set<Contact> contacts = new HashSet<>();
+
+    public Category(String title) {
+        this.title = title;
+    }
 }

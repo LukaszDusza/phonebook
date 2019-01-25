@@ -1,6 +1,7 @@
 package devlab.phonebook.controller;
 
 
+import devlab.phonebook.commons.exceptions.NotFoundException;
 import devlab.phonebook.dtos.model.CategoryDto;
 import devlab.phonebook.service.ContactService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class CategoryControllerDto {
     }
 
     @GetMapping("/categories/{title}")
-    public ResponseEntity<CategoryDto> getAllCategoriesDtoWithContactsDto(@PathVariable String title) {
+    public ResponseEntity<CategoryDto> getAllCategoriesDtoWithContactsDto(@PathVariable String title) throws NotFoundException {
         return new ResponseEntity<>(contactService.getCategoryWithContactsDto(title), HttpStatus.OK);
     }
 

@@ -33,4 +33,7 @@ public class Ranking {
     )
     private Set<Contact> contacts = new HashSet<>();
 
+    public Ranking(int number) {
+        this.number = number;
+    }
 }

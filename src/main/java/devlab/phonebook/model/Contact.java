@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @Data //Adnotacja @Data generuje settery, gettery, oraz metody z klasy Object.
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder //wzorzec projetkowy Builder
 // Adnotacja, która określa, czy dana klasa jest encją bazodanową.
 // Hibernate zmapuje tą klasę  i stworzy jej odzwierciedlenie w bazie danych.
 // pola klasy , to będą kolumny.
@@ -55,6 +57,7 @@ public class Contact {
             joinColumns = @JoinColumn(name = "contact_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
+
 
 
 }

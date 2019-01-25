@@ -14,6 +14,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "address")
+@NoArgsConstructor
 public class Address {
 
     @Id
@@ -33,5 +34,7 @@ public class Address {
     )
     private Set<Contact> contacts = new HashSet<>();
 
-
+    public Address(String city) {
+        this.city = city;
+    }
 }

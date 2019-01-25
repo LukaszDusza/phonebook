@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatorXLS<T>{
+public class CreatorXLS<T> {
 
    private Class<T> clazz;
 
@@ -30,7 +30,6 @@ public class CreatorXLS<T>{
 
         //tworzę arkusz w pliku excel
         HSSFSheet sheet = workbook.createSheet(fileName);
-
 
         //ustawam czcionki dla nagłowka
         Font headerFont = workbook.createFont();
@@ -48,7 +47,7 @@ public class CreatorXLS<T>{
 
         for(Field f: clazz.getDeclaredFields()) {
             columns.add(f.getName());
-//            System.out.println(f.getName());
+            System.out.println(f.getName());
 
         }
 
@@ -75,23 +74,18 @@ public class CreatorXLS<T>{
 
                 Method method = series.get(i)
                         .getClass()
-                        .getMethod("get" + columns.get(j)
+                        .getMethod("get" + columns.get(j) //name = getName
                         .substring(0,1)
                         .toUpperCase() + columns.get(j)
                         .substring(1));
 
-
-
                 Object result = method.invoke(series.get(i));
                 cell.setCellValue(String.valueOf(result));
-
-
 
             }
 
 
         }
-
 
         //tworzenie pliku docelowego
         long mills = System.currentTimeMillis();
