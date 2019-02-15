@@ -187,17 +187,20 @@ public class ContactService {
     //DTO
     public void addNewContactDTO(ContactDto contactDto) {
 
-        contactRepository.save (
-                Contact.builder()
-                        .name(contactDto.getName())
-                        .surname(contactDto.getSurname())
-                        .number(contactDto.getNumber())
-                        .address(Optional.of(addressRepository.findByCity(contactDto.getAddress()).orElseGet(() -> addressRepository.save(new Address(contactDto.getAddress())))).get())
-                        .ranking(Optional.of(rankingRepository.findByNumber(contactDto.getRanking()).orElseGet(() -> rankingRepository.save(new Ranking(contactDto.getRanking())))).get())
-                        .category(Optional.of(categoryRepository.findByTitle(contactDto.getCategory()).orElseGet(() -> categoryRepository.save(new Category(contactDto.getCategory())))).get())
-                        .tags(new HashSet<>())
-                        .build()
-        );
+        if (!contactRepository.findContactByPhoneNumber(contactDto.getNumber()).isPresent()) {
+
+            contactRepository.save(
+                    Contact.builder()
+                            .name(contactDto.getName())
+                            .surname(contactDto.getSurname())
+                            .number(contactDto.getNumber())
+                            .address(Optional.of(addressRepository.findByCity(contactDto.getAddress()).orElseGet(() -> addressRepository.save(new Address(contactDto.getAddress())))).get())
+                            .ranking(Optional.of(rankingRepository.findByNumber(contactDto.getRanking()).orElseGet(() -> rankingRepository.save(new Ranking(contactDto.getRanking())))).get())
+                            .category(Optional.of(categoryRepository.findByTitle(contactDto.getCategory()).orElseGet(() -> categoryRepository.save(new Category(contactDto.getCategory())))).get())
+                            .tags(new HashSet<>())
+                            .build()
+            );
+        }
 
 //        Contact contact = new Contact();
 
@@ -246,7 +249,7 @@ public class ContactService {
     }
 
     //DTO
-    public boolean deleteContactByPhone(String phone) throws NotFoundException{
+    public boolean deleteContactByPhone(String phone) throws NotFoundException {
 
 
         Optional<Contact> contactOptional = contactRepository.findContactByPhoneNumber(phone);
@@ -345,7 +348,7 @@ public class ContactService {
 
     //DTO
     public Collection<TagDto> getAllTags() {
-        return tagRepository.findAll().stream().map( t -> tagMapper.map(t)).collect(Collectors.toList());
+        return tagRepository.findAll().stream().map(t -> tagMapper.map(t)).collect(Collectors.toList());
     }
 
 
