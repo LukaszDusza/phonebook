@@ -5,8 +5,10 @@ import devlab.phonebook.commons.exceptions.NotFoundException;
 import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.model.Contact;
 import devlab.phonebook.service.ContactService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,7 @@ public class ContactControllerDto {
         return contactService.getAllDtoContactsTwo();
     }
 
+
     @GetMapping("/contacts/{name}")
     public List<ContactDto> getAllContacts(@PathVariable String name) {
         return contactService.getContactsDtoByName(name);
@@ -46,7 +49,9 @@ public class ContactControllerDto {
     }
 
 
+  //  @PostMapping(value = "/contacts", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("/contacts")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addNew(@RequestBody ContactDto contactDto) {
         contactService.addNewContactDTO(contactDto);
     }
