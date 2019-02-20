@@ -8,6 +8,11 @@ public class Trzy extends Dwa{
     }
 
     @Override
+    protected String sampleDwa() {
+        return super.sampleDwa();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
