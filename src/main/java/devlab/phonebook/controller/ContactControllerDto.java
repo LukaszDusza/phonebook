@@ -1,6 +1,7 @@
 package devlab.phonebook.controller;
 
 
+import devlab.phonebook.commons.exceptions.ContactNotfoundException;
 import devlab.phonebook.commons.exceptions.NotFoundException;
 import devlab.phonebook.dtos.model.ContactDto;
 import devlab.phonebook.model.Contact;
@@ -39,21 +40,27 @@ public class ContactControllerDto {
 
     @ResponseBody
     @GetMapping("/contacts/number")
-    public ResponseEntity<?> getContactDtoByNumber(@RequestParam String number) {
+    public ResponseEntity<ContactDto> getContactDtoByNumber(@RequestParam String number) {
         try {
             return new ResponseEntity<>(contactService.getContactDtoByNumber(number), HttpStatus.OK); //200
         } catch (NotFoundException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND); //404
+            throw new ContactNotfoundException();
+          //  return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND); //404
         }
     }
 
 
   //  @PostMapping(value = "/contacts", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("/contacts")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addNew(@RequestBody ContactDto contactDto) {
+    @ResponseStatus(value = HttpStatus.CREATED) //return JSON (ErrorMessage).
+    public
+  //  ResponseEntity<ContactDto>
+    void
+    addNew(@RequestBody ContactDto contactDto) {
+
         contactService.addNewContactDTO(contactDto);
+      //  return new ResponseEntity<>(contactService.addNewContactDTO(contactDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/contacts")

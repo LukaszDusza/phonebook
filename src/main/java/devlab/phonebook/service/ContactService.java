@@ -1,5 +1,6 @@
 package devlab.phonebook.service;
 
+import devlab.phonebook.commons.exceptions.ContactAlreadyExistException;
 import devlab.phonebook.commons.exceptions.NotFoundException;
 import devlab.phonebook.commons.xlsCreator.CreatorXLS;
 import devlab.phonebook.dtos.mappers.CategoryMapper;
@@ -185,7 +186,7 @@ public class ContactService {
     }
 
     //DTO
-    public void addNewContactDTO(ContactDto contactDto) {
+    public ContactDto addNewContactDTO(ContactDto contactDto) {
 
         if (!contactRepository.findContactByPhoneNumber(contactDto.getNumber()).isPresent()) {
 
@@ -194,13 +195,28 @@ public class ContactService {
                             .name(contactDto.getName())
                             .surname(contactDto.getSurname())
                             .number(contactDto.getNumber())
-                            .address(Optional.of(addressRepository.findByCity(contactDto.getAddress()).orElseGet(() -> addressRepository.save(new Address(contactDto.getAddress())))).get())
+
+                            .address(
+                                    Optional.of(
+                                            addressRepository
+                                                    .findByCity(contactDto.getAddress())
+                                                    .orElseGet(
+                                                            () -> addressRepository.save(new Address(contactDto.getAddress()))
+                                                    )
+                                    ).get()
+                            )
+
                             .ranking(Optional.of(rankingRepository.findByNumber(contactDto.getRanking()).orElseGet(() -> rankingRepository.save(new Ranking(contactDto.getRanking())))).get())
                             .category(Optional.of(categoryRepository.findByTitle(contactDto.getCategory()).orElseGet(() -> categoryRepository.save(new Category(contactDto.getCategory())))).get())
                             .tags(new HashSet<>())
                             .build()
             );
+
+            return contactDto;
         }
+
+        //errors?
+        throw new ContactAlreadyExistException();
 
 //        Contact contact = new Contact();
 
