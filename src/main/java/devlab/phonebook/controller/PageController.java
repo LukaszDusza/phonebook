@@ -1,4 +1,4 @@
-package devlab.phonebook.View.controller;
+package devlab.phonebook.controller;
 
 
 import org.springframework.beans.factory.annotation.Value;
@@ -17,50 +17,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@PropertySource("classpath:sample.properties")
+@PropertySource("classpath:sample.properties") //todo - check this annotation
 public class PageController {
 
     @Value("${links.swagger}")
     private String swaggerLinkTitle;
 
     @GetMapping("/")
-    public String homePage(Model model, HttpServletRequest request,  @RequestParam(value = "email", required = false) String email) {
+    public String homePage(
+            Model model,
+            HttpServletRequest request,
+            @RequestParam(value = "email", required = false) String email) {
+
         model.addAttribute("swaggerLinkTitle", swaggerLinkTitle);
-        model.addAttribute("servlet", getHeadersInfo(request));
+        model.addAttribute("headers", getHeadersInfo(request));
         model.addAttribute("email", email);
 
         return "index";
     }
 
-    @GetMapping("/result")
-    public String resultPage( @RequestParam(value = "email", required = false) String email) {
-
+    @GetMapping("/result") //example method for form input in index.html
+    public String resultPage(
+            @RequestParam(value = "email", required = false) String email) {
         return "redirect:/?email=" + email;
     }
 
     private Map<String, String> getHeadersInfo(HttpServletRequest request) {
 
-        Map<String, String> map = new HashMap<>();
-
+        Map<String, String> result = new HashMap<>();
         Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
+
+        while (headerNames.hasMoreElements()) { //true false
 
             String key = headerNames.nextElement().toString();
             String value = request.getHeader(key);
-            map.put(key, value);
+            result.put(key, value);
         }
-
-//        System.out.println(" * * * * * * * * * * * *");
-//        map.forEach((k, v) -> System.out.println(k + ": " + v));
-//        System.out.println(" * * * * * * * * * * * *");
-
-        return map;
-
+        return result;
     }
-
 
 }
 
-//todo - uzupełnić controller o powyższe.
 
 

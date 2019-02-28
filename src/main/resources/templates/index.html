@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>PhoneApp</title>
@@ -12,7 +12,6 @@
 </div>
 
 <div style="width: 100%; text-align: center; float: left">
-
     <h3>Client info: </h3>
     <div style="width: 100%; text-align: center; float: left">
         <table style="text-align: left; border: 1px dotted gray;">
@@ -20,9 +19,9 @@
                 <th>key</th>
                 <th>value</th>
             </tr>
-            <tr th:each="serv : ${servlet}">
-                <td th:text="${serv.key}">key</td>
-                <td th:text="${serv.value}">val</td>
+            <tr th:each="header : ${headers}"> <!--from PageController -> "headers"-->
+                <td th:text="${header.key}">key</td>
+                <td th:text="${header.value}">val</td>
             </tr>
         </table>
     </div>
@@ -30,13 +29,15 @@
 
 <div style="width: 100%; text-align: center; float: left">
 
-    <h3>Example Inputs for Selenium test: </h3>
+    <h3 id="selenium">Example Inputs for Selenium test: </h3>
     <div style="width: 100%; text-align: center; float: left">
+
         <form action="/result" method="get">
             <small>Input for selenium test</small>
-            <input type="email" name="email" placeholder="your email">
+            <input type="email" name="email" placeholder="type your email">
             <button type="submit">send and back to home page</button>
         </form>
+
         <p th:text="${email}" id="paragraph"></p>
     </div>
 </div>
@@ -44,5 +45,3 @@
 </body>
 </html>
 
-
-<!--todo - dodać stronę index.html poprawnie-->

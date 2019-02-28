@@ -26,25 +26,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest //todo - dodać dekorator
+@WebMvcTest
 public class PhonebookApplicationTests {
 
     private static final Logger LOGGER =  Logger.getLogger(PhonebookApplicationTests.class.getName());
 
-//    WebDriver wd;
-//    private String url;
-//    private String titlePage;
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,19 +48,13 @@ public class PhonebookApplicationTests {
 
     @BeforeClass
     public static void beforeClass() {
-        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
 
         LOGGER.log(Level.INFO, "Start Testing...");
     }
 
     @Before
     public void beforeSetup() {
-        LOGGER.log(Level.INFO, "Set Web Selennium Driver");
-//        url = "http://localhost:8080";
-//        titlePage = "PhoneApp";
-//
-//        wd = new ChromeDriver();
-//        wd.get(url);
+     //   LOGGER.log(Level.INFO, "Set Web Selennium Driver");
 
     }
 
@@ -97,7 +84,8 @@ public class PhonebookApplicationTests {
 
        // System.out.println(mockContact);
 
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("http://localhost:8080/api/dto/contacts/number")
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("http://localhost:8080/api/dto/contacts/number")
                 .param("number", "78965413")
                 .contentType("application/json;charset=UTF-8")
                 .accept(MediaType.APPLICATION_JSON_VALUE);
@@ -118,8 +106,6 @@ public class PhonebookApplicationTests {
                 "    \"party\"\n" +
                 "  ]\n" +
                 "}";
-
-      //  System.out.println(result.getResponse().getContentAsString());
 
         //then
         JSONAssert.assertEquals(expected, result.getResponse()

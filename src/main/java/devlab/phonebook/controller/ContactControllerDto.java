@@ -101,4 +101,20 @@ public class ContactControllerDto {
         return ResponseEntity.ok().headers(responseHeaders).body(contactService.getContacts());
     }
 
+    // todo - test this
+//    @PostMapping("/students/{studentId}/courses")
+//    public ResponseEntity<Void> registerStudentForCourse(
+//            @PathVariable String studentId, @RequestBody Course newCourse) {
+//
+//        Course course = studentService.addCourse(studentId, newCourse);
+//
+//        if (course == null)
+//            return ResponseEntity.noContent().build();
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(
+//                "/{id}").buildAndExpand(course.getId()).toUri();
+//
+//        return ResponseEntity.created(location).build();
+//    }
+
 }
