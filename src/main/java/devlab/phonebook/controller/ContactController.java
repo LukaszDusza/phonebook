@@ -22,7 +22,7 @@ public class ContactController {
     }
 
 
-    @GetMapping("/contacts")
+    @GetMapping(value = "/contacts")
     public List<Contact> getContacts() {
         return contactService.getContacts();
     }

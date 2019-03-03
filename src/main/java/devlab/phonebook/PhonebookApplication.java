@@ -1,13 +1,11 @@
 package devlab.phonebook;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
+
+@PropertySource("classpath:config.properties")
 @SpringBootApplication //@Configuration //@EnableAutoConfiguration //@ComponentScan
 public class PhonebookApplication {
 
@@ -15,7 +13,6 @@ public class PhonebookApplication {
     statyczna metoda, która uruchamia statyczną metodę 'run'klasy SpringApplication.
     Jako parametr przyjmuje naszą klasę uruchomieniową.
      */
-
 
     public static void main(String[] args) {
         SpringApplication.run(PhonebookApplication.class, args);
